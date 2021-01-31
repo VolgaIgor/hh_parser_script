@@ -5,6 +5,14 @@
 @import "~webext-base-css/webext-base.css";
 
 body {
+  padding: 15px;
   color: $black;
   background-color: $greyWhite;
+}
+
+input {
+    background-color: #fff !important;
+    border: 1px solid grey;
+    padding: 5px 10px;
+    margin-top: 5px;
 }

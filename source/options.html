@@ -4,20 +4,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Options</title>
+  <title>Настройки парсера</title>
 </head>
 
 <body>
   <form>
     <p>
-      <label for="username">Your Name</label><br>
-      <input type="text" id="username" name="username" spellcheck="false" autocomplete="off" required />
+        <label>Адрес сервера:</label>
+        <input type="text" id="endpoint" value="">
     </p>
     <p>
-      <label>
-        <input type="checkbox" name="logging">
-        Show the features enabled on each page in the console
-      </label>
+        <input type="submit" id="save_button" value="Сохранить">
     </p>
   </form>
 </body>
