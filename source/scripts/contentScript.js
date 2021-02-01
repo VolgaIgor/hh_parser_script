@@ -51,7 +51,12 @@ function runParse() {
             },
             update_date: function( parentNode ) {
                 var regex = /(\d{1,2})\.(\d{2})\.(\d{4}) (\d{2}):(\d{2})/;
-                var dateStr = document.querySelector('.resume-header-additional__update-date').textContent;
+                var dateNode = parentNode.querySelector('.resume-header-additional__update-date');
+                if ( dateNode === null ) {
+                    return null;
+                }
+                
+                var dateStr = dateNode.textContent;
                 var exec = regex.exec( dateStr );
                 var date = new Date( exec[3], exec[2] - 1, exec[1], exec[4], exec[5] );
                 return date.getTime() / 1000; // Переводим дату в Unix-время
@@ -69,7 +74,14 @@ function runParse() {
                 return ( node !== null ) ? parseInt( node.textContent ) : null;
             }
         };
-        sendResume( document.querySelector('.resume-header'), data );
+        
+        browser.storage.local.get("resume_selector").then( (storage) => {
+            var resume_selector = (storage.resume_selector) ? storage.resume_selector : '.resume-header';
+            var resume = document.querySelector( resume_selector );
+            if ( resume !== null ) {
+                sendResume( resume, data );
+            }
+        });
     };
 
     // Функция запускающаяся на странице списка резюме
@@ -102,26 +114,20 @@ function runParse() {
                 }
             }
         };
-        var resumeList = document.querySelectorAll('.resume-search-item');
-        resumeList.forEach(function(item, i, arr) {
-            sendResume( item, data );
+        
+        browser.storage.local.get("resumes_selector").then( (storage) => {
+            var resumes_selector = (storage.resumes_selector) ? storage.resumes_selector : '.resume-search-item';
+            var resumes = document.querySelectorAll( resumes_selector );
+            if ( resumes.length !== 0 ) {
+                resumes.forEach(function(item, i, arr) {
+                    sendResume( item, data );
+                });
+            }
         });
     };
-
-    // Определяем на какой странице находимся
-    var path = window.location.pathname;
-    var section = path.split('/')[1];
     
-    switch (section) {
-        case 'resume':
-            runResumeParse();
-            break;
-        case 'resumes':
-            runResumeListParse();
-            break;
-        default:
-            return;
-    }
+    runResumeParse();
+    runResumeListParse();
 };
 
 // Задержка для прогрузки контактных данных
