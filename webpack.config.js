@@ -56,6 +56,7 @@ module.exports = {
     contentScript: './source/scripts/contentScript.js',
     popup: './source/scripts/popup.js',
     options: './source/scripts/options.js',
+    defValue: './source/scripts/defValue.js',
   },
 
   output: {
